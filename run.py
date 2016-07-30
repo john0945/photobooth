@@ -14,16 +14,18 @@ import pygame
 #import pytumblr # https://github.com/tumblr/pytumblr
 import config
 from signal import alarm, signal, SIGALRM, SIGKILL
+import subprocess
 
 ########################
 ### Variables Config ###
 ########################
 button1_pin = 37 # pin for the big red button
+flash_pin = 40
 
 post_online = 0 # default 1. Change to 0 if you don't want to upload pics.
 total_pics = 4 # number of pics to be taken
 capture_delay = 3 # delay between pics
-prep_delay = 10 # number of seconds at step 1 as users prep to have photo taken
+prep_delay = 2 # number of seconds at step 1 as users prep to have photo taken
 restart_delay = 4 # how long to display finished message before beginning a new session
 
 monitor_w = 800
@@ -44,6 +46,8 @@ real_path = os.path.dirname(os.path.realpath(__file__))
 ####################
 GPIO.setmode(GPIO.BOARD)
 GPIO.setup(button1_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP) # falling edge detection on button 1
+#GPIO.setup(flash_pin,GPIO.IN)
+ 
 #################
 ### Functions ###
 #################
@@ -60,7 +64,6 @@ def shut_it_down(channel):
 
 def exit_photobooth(channel):
     print "Photo booth app ended. RPi still running" 
-    GPIO.output(led1_pin,True);
     time.sleep(3)
     sys.exit()
           
@@ -121,7 +124,20 @@ def start_photobooth():
 	show_image(real_path + "/blank.png")
 	print "Get Ready"
 	show_image(real_path + "/instructions.png")
-	sleep(prep_delay) 
+	sleep(prep_delay)
+	show_image(real_path + "/instructions2.png")
+	sleep(prep_delay)
+
+	show_image(real_path + "/5.png")
+	sleep(1)
+	show_image(real_path + "/4.png")
+	sleep(1)
+	show_image(real_path + "/3.png")
+	sleep(1)
+	show_image(real_path + "/2.png")
+	sleep(1)
+	show_image(real_path + "/1.png")
+	sleep(1)
 
 	show_image(real_path + "/blank.png")
 	
@@ -140,19 +156,31 @@ def start_photobooth():
 	print "Taking pics" 
 	now = time.strftime("%H:%M:%S") #get the current date and time for the start of the filename
 	try: #take the photos
-		for i, filename in enumerate(camera.capture_continuous(config.file_path + now + '-' + '{counter:02d}.jpg')):
-			print(filename)
-			sleep(0.25) #pause the LED on for just a bit
-			sleep(capture_delay) # pause in-between shots
-			if i == total_pics-1:
-				break
+		for i in range(4):
+			#GPIO.setup(flash_pin,GPIO.OUT)
+			#GPIO.output(flash_pin,False);
+			#sleep(5)
+			camera.flash_mode = 'on'
+			camera.capture(config.file_path + now + '-' + str(i) + '.jpg')
+			#GPIO.setup(flash_pin,GPIO.IN)
+			sleep(capture_delay)
+		# for i, filename in enumerate(camera.capture_continuous(config.file_path + now + '-' + '{counter:02d}.jpg')):
+		# 	print(filename)
+		# 	GPIO.setup(flash_pin,GPIO.IN)
+		# 	sleep(0.25) #pause the LED on for just a bit
+		# 	sleep(capture_delay) # pause in-between shots
+		# 	GPIO.setup(flash_pin,GPIO.OUT)
+		# 	GPIO.output(flash_pin,False);
+		# 	if i == total_pics-1:
+		# 		GPIO.setup(flash_pin,GPIO.IN)
+		# 		break
 	finally:
 		camera.stop_preview()
 		camera.close()
+
 	########################### Begin Step 3 #################################
 	show_image(real_path + "/processing.png")
 
-	
 	########################### Begin Step 4 #################################
 	try:
 		display_pics(now)
@@ -164,6 +192,9 @@ def start_photobooth():
 	show_image(real_path + "/finished2.png")
 
 	time.sleep(restart_delay)
+
+    	subprocess.call("sudo /home/pi/photobooth/pb/assemble", shell=True)
+
 	show_image(real_path + "/blank.png")
 
 	show_image(real_path + "/intro.png");
