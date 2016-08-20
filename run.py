@@ -111,10 +111,11 @@ def display_pics(jpg_group):
     except Alarm:
         raise KeyboardInterrupt
     for i in range(0, replay_cycles): #show pics a few times
-		for i in range(1, total_pics+1): #show each pic
-			filename = config.file_path + jpg_group + "-0" + str(i) + ".jpg"
+		for i in range(4): #show each pic
+			filename = config.file_path + jpg_group + '-' + str(i) + '.jpg'
                         show_image(filename);
-			time.sleep(replay_delay) # pause 
+			time.sleep(replay_delay) # pause
+		show_image()
 
     
 				
