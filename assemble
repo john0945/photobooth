@@ -9,6 +9,6 @@ suffix=$(date +%H%M%S)
 
 
 cp /home/pi/temp_montage3.jpg /home/pi/photos/PB_${suffix}.jpg
-sudo python /home/pi/photobooth/pb/fb.py '/home/pi/temp_montage3.jpg'
+sudo python /home/pi/photobooth/fb.py '/home/pi/temp_montage3.jpg'
 rm /home/pi/temp_photos/*.jpg
 rm /home/pi/temp*
