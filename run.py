@@ -194,7 +194,7 @@ def start_photobooth():
 
 	time.sleep(restart_delay)
 
-    	subprocess.call("sudo /home/pi/photobooth/pb/assemble", shell=True)
+    	subprocess.call("sudo /home/pi/photobooth/assemble", shell=True)
 
 	show_image(real_path + "/blank.png")
 
