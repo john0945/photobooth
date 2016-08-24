@@ -112,7 +112,7 @@ def display_pics(jpg_group):
         raise KeyboardInterrupt
     for i in range(0, replay_cycles): #show pics a few times
 		for i in range(4): #show each pic
-			filename = config.file_path + jpg_group + '-' + str(i) + '.jpg'
+			filename = config.file_path + str(i) + '.jpg'
                         show_image(filename);
 			time.sleep(replay_delay) # pause
 		show_image()
@@ -124,10 +124,6 @@ def start_photobooth():
 	################################# Begin Step 1 ################################# 
 	show_image(real_path + "/blank.png")
 	print "Get Ready"
-	show_image(real_path + "/instructions.png")
-	sleep(prep_delay)
-	show_image(real_path + "/instructions2.png")
-	sleep(prep_delay)
 
 	show_image(real_path + "/5.png")
 	sleep(1)
@@ -140,11 +136,14 @@ def start_photobooth():
 	show_image(real_path + "/1.png")
 	sleep(1)
 
+	show_image(real_path + "/instructions.png")
+	sleep(1)
+
 	show_image(real_path + "/blank.png")
 	
 	camera = picamera.PiCamera()
-	pixel_width = 1600 #use a smaller size to process faster, and tumblr will only take up to 500 pixels wide for animated gifs
-	pixel_height = monitor_h * pixel_width // monitor_w
+	pixel_width = 3280 #1600 #use a smaller size to process faster, and tumblr will only take up to 500 pixels wide for animated gifs
+	pixel_height = 2464 #monitor_h * pixel_width // monitor_w
 	camera.resolution = (pixel_width, pixel_height) 
 	camera.vflip = False #True
 	camera.hflip = False
@@ -162,7 +161,7 @@ def start_photobooth():
 			#GPIO.output(flash_pin,False);
 			#sleep(5)
 			camera.flash_mode = 'on'
-			camera.capture(config.file_path + now + '-' + str(i) + '.jpg')
+			camera.capture(config.file_path +  str(i) + '.jpg')
 			#GPIO.setup(flash_pin,GPIO.IN)
 			sleep(capture_delay)
 		# for i, filename in enumerate(camera.capture_continuous(config.file_path + now + '-' + '{counter:02d}.jpg')):
@@ -180,7 +179,7 @@ def start_photobooth():
 		camera.close()
 
 	########################### Begin Step 3 #################################
-	show_image(real_path + "/processing.png")
+	#show_image(real_path + "/processing.png")
 
 	########################### Begin Step 4 #################################
 	try:
