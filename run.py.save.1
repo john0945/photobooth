@@ -27,7 +27,7 @@ post_online = 0 # default 1. Change to 0 if you don't want to upload pics.
 total_pics = 4 # number of pics to be taken
 capture_delay = 4 # delay between pics
 prep_delay = 2 # number of seconds at step 1 as users prep to have photo taken
-restart_delay = 4 # how long to display finished message before beginning a new session
+restart_delay = 1 # how long to display finished message before beginning a new session
 
 monitor_w = 800
 monitor_h = 480
@@ -150,7 +150,7 @@ def start_photobooth():
 
 	camera = picamera.PiCamera()
 	pixel_width = 3280 #1600 #use a smaller size to process faster, and tumblr will only take up to 500 pixels wide for animated gifs
-	pixel_height =2464 #monitor_h * pixel_width // monitor_w
+	pixel_height = 2464 #monitor_h * pixel_width // monitor_w
 	camera.resolution = (pixel_width, pixel_height) 
 	camera.vflip = False #True
 	camera.hflip = False
@@ -171,7 +171,7 @@ def start_photobooth():
 			#GPIO.output(flash_pin,False);
 			#sleep(5)
 			camera.flash_mode = 'on'
-			camera.capture(config.file_path +  str(i) + '.jpg')
+			camera.capture(config.file_path +  str(i) + '.jpg', )
 			#GPIO.setup(flash_pin,GPIO.IN)
 			sleep(capture_delay)
 		# for i, filename in enumerate(camera.capture_continuous(config.file_path + now + '-' + '{counter:02d}.jpg')):
@@ -185,8 +185,15 @@ def start_photobooth():
 		# 		GPIO.setup(flash_pin,GPIO.IN)
 		# 		break
 	finally:
+#		camera.remove_overlay(o1)
+#		camera.remove_overlay(o2)
 		camera.stop_preview()
 		camera.close()
+
+	########################### Begin Step 3 #################################
+	#show_image(real_path + "/processing.png")
+
+	########################### Begin Step 4 #################################
 
 	try:
 		display_pics(now)

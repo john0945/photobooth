@@ -7,18 +7,21 @@ cp /home/pi/temp_photos/1.jpg /home/pi/photos/${suffix}-1.jpg
 cp /home/pi/temp_photos/2.jpg /home/pi/photos/${suffix}-2.jpg
 cp /home/pi/temp_photos/3.jpg /home/pi/photos/${suffix}-3.jpg
 
-mogrify -crop 3280x1812+0+326 /home/pi/temp_photos/*.jpg
-mogrify -resize 746x412 /home/pi/temp_photos/*.jpg
+mogrify -resize 553x413 /home/pi/temp_photos/*.jpg
+
+
+#mogrify -crop 3280x1812+0+326 /home/pi/temp_photos/*.jpg
 #montage /home/pi/temp_photos/*.jpg -tile 2x2 -geometry +10+10 /home/pi/temp_montage2.jpg
 #montage /home/pi/temp_montage2.jpg /home/pi/photobooth_label.jpg -tile 2x1 -geometry +5+5 /home/pi/temp_montage3.jpg
 
 convert -page +0+0 /home/pi/photobooth/frame.png \
-          -page +210+77 /home/pi/temp_photos/0.jpg   -page +1161+77 /home/pi/temp_photos/1.jpg  \
-          -page +210+590 /home/pi/temp_photos/2.jpg   -page +1162+590 /home/pi/temp_photos/3.jpg  \
+          -page +111+77 /home/pi/temp_photos/0.jpg   -page +826+77 /home/pi/temp_photos/1.jpg  \
+          -page +111+590 /home/pi/temp_photos/2.jpg   -page +826+590 /home/pi/temp_photos/3.jpg  \
           -layers flatten  /home/pi/temp_montage3.jpg
 
 cp /home/pi/temp_montage3.jpg /home/pi/photos/PB_${suffix}.jpg
 cp /home/pi/temp_montage3.jpg /var/www/html/photos/PB_${suffix}.jpg
-sudo python /home/pi/photobooth/fb.py '/home/pi/temp_montage3.jpg'
+
+sudo python /home/pi/photobooth/fb.py /home/pi/photos/PB_${suffix}.jpg &
 rm /home/pi/temp_photos/*.jpg
 rm /home/pi/temp_montage3.jpg
