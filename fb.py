@@ -1,8 +1,5 @@
-import facebook, sys
-
-file = sys.argv[1]
-
-graph = facebook.GraphAPI(access_token='EAAD4OYlDv3gBACJsFLTokUWb9LPs6tWaBZBj4JFWzddCNR8HiZA5if1q8xDCRdkCoxXxwg8cJutKQsVxRHqRYUkHoA70imbcQoGsFkffDo2k2SDHtl52mmQ2ZCeZAoD4eMunAXZAgTevdiOc8525I36zP66AoCt7a7AsE0V9hsQZDZD', version='2.6')
-page_id = "253185248400673"
-graph.put_photo(image=open(file, 'rb'), album_path=page_id + "/photos")
+import facebook
+graph = facebook.GraphAPI(access_token='EAAXPZCt3MtbMBAENWQEX6XWWpyJrlSnH5jxZAoBpadMZC50cIP1KaNfYTLFBI6L0IkRMlvZCg9OVFZAW98MWRHFae1518z7GqX7kjE3cYj8rrBnOM8m4BXZBwd2gX1RnjbWJf8UTbB9rvuqdFlZA63dEjpKKrK7XoMIfDekrw8SsgZDZD', version='2.6')
+album_id = "1067443953334625"
+graph.put_photo(image=open('blank.png', 'rb'), album_path=album_id + "/photos")
 
