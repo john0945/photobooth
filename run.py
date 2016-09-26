@@ -116,7 +116,7 @@ def display_pics(jpg_group):
 			filename = config.file_path + str(i) + '.jpg'
                         show_image(filename);
 			time.sleep(replay_delay) # pause
-		show_image()
+		#show_image()
 
     
 				
@@ -160,30 +160,16 @@ def start_photobooth():
 #	o1 = camera.add_overlay(np.getbuffer(a), layer=3, alpha=255, fullscreen=False, window = (0, -400, 800, 100))	
 #	o2 = camera.add_overlay(np.getbuffer(a), layer=3, alpha=255, fullscreen=False, window = (0, 2138, 3280, 352))	
 
-	sleep(2) #warm up camera
+#	sleep(2) #warm up camera
 
 	################################# Begin Step 2 #################################
 	print "Taking pics" 
 	now = time.strftime("%H:%M:%S") #get the current date and time for the start of the filename
 	try: #take the photos
 		for i in range(4):
-			#GPIO.setup(flash_pin,GPIO.OUT)
-			#GPIO.output(flash_pin,False);
-			#sleep(5)
+			sleep(capture_delay)
 			camera.flash_mode = 'on'
 			camera.capture(config.file_path +  str(i) + '.jpg')
-			#GPIO.setup(flash_pin,GPIO.IN)
-			sleep(capture_delay)
-		# for i, filename in enumerate(camera.capture_continuous(config.file_path + now + '-' + '{counter:02d}.jpg')):
-		# 	print(filename)
-		# 	GPIO.setup(flash_pin,GPIO.IN)
-		# 	sleep(0.25) #pause the LED on for just a bit
-		# 	sleep(capture_delay) # pause in-between shots
-		# 	GPIO.setup(flash_pin,GPIO.OUT)
-		# 	GPIO.output(flash_pin,False);
-		# 	if i == total_pics-1:
-		# 		GPIO.setup(flash_pin,GPIO.IN)
-		# 		break
 	finally:
 		camera.stop_preview()
 		camera.close()
@@ -195,8 +181,9 @@ def start_photobooth():
 		traceback.print_exception(e.__class__, e, tb)
 #	pygame.quit()
 	print "Done"
-	show_image(real_path + "/finished2.png")
+	show_image(real_path + "/processing.png")
     	subprocess.call("sudo /home/pi/photobooth/assemble", shell=True)
+	show_image(real_path + "/finished2.png")
 
 	time.sleep(restart_delay)
 
