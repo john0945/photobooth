@@ -116,7 +116,7 @@ def display_pics(jpg_group):
 			filename = config.file_path + str(i) + '.jpg'
                         show_image(filename);
 			time.sleep(replay_delay) # pause
-		#show_image()
+#		show_image()
 
     
 				
@@ -175,6 +175,7 @@ def start_photobooth():
 		camera.close()
 
 	try:
+	    	subprocess.call("sudo /home/pi/photobooth/assemble &", shell=True)
 		display_pics(now)
 	except Exception, e:
 		tb = sys.exc_info()[2]
@@ -182,7 +183,7 @@ def start_photobooth():
 #	pygame.quit()
 	print "Done"
 	show_image(real_path + "/processing.png")
-    	subprocess.call("sudo /home/pi/photobooth/assemble", shell=True)
+	time.sleep(1)
 	show_image(real_path + "/finished2.png")
 
 	time.sleep(restart_delay)
