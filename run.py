@@ -197,8 +197,12 @@ def start_photobooth():
 ### Main Program ###
 ####################
 
-show_image(real_path + "/intro.png");
 
+if os.path.isdir("/media/pi/Transcend"):
+    show_image(real_path + "/intro.png");
+else:
+    show_image(real_path + "/missing.png");
+    
 while True:
         GPIO.wait_for_edge(button1_pin, GPIO.FALLING)
 	time.sleep(0.2) #debounce
